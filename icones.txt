@@ -1,0 +1,14 @@
+icones
+
+LINK STYLESHEET:
+
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/7.0.96/css/materialdesignicons.min.css"&gt;>
+
+ICONES:
+
+ https://pictogrammers.github.io/@mdi/font/5.0.45/
+
+CHAMAR ICONES:
+
+mdi (nome do icone)
+
