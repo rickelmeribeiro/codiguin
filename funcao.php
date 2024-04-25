@@ -76,30 +76,28 @@ function EDITARREGISTRO($CAMPOS)
 //}
 
 
+    function ADICIONARREGISTRO($CAMPOS)
+    {
+        $conn = conectar();
+        try {
+            $conn->beginTransaction();
 
 
-function ADICIONAR REGISTRO($CAMPOS)
-{
-    $conn = conectar();
-    try {
-        $conn->beginTransaction();
-
-
-        $stmt = $conn->prepare("INSERT INTO TABELA (CAMPOS) VALUES (?, ?)");
-        $stmt->execute([$CAMPOS]);
-        $conn->commit();
-        if ($stmt->rowCount() > 0) {
-            return $stmt->fetchAll(PDO::FETCH_OBJ);
+            $stmt = $conn->prepare("INSERT INTO TABELA (CAMPOS) VALUES (?, ?)");
+            $stmt->execute([$CAMPOS]);
+            $conn->commit();
+            if ($stmt->rowCount() > 0) {
+                return $stmt->fetchAll(PDO::FETCH_OBJ);
+            }
+            return 'Vazio';
+        } catch (PDOException $e) {
+            echo 'Exception -> ' . $e->getMessage();
+            $conn->rollback();
+            return $e->getMessage();
+        } finally {
+            $conn = null;
         }
-        return 'Vazio';
-    } catch (PDOException $e) {
-        echo 'Exception -> ' . $e->getMessage();
-        $conn->rollback();
-        return $e->getMessage();
-    } finally {
-        $conn = null;
     }
-}
 
 //    function produtoAdd($nome, $valor)
 //    {
@@ -125,29 +123,30 @@ function ADICIONAR REGISTRO($CAMPOS)
 //    }
 
 
-function EXCLUIRREGISTRO($CAMPOS)
-{
-    $conn = conectar();
-    try {
+    function EXCLUIRREGISTRO($CAMPOS)
+    {
+        $conn = conectar();
+        try {
 
-        $conn->beginTransaction();
+            $conn->beginTransaction();
 
-        $stmt = $conn->prepare("DELETE FROM TABELA WHERE id = :id");
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
-        $conn->commit();
+            $stmt = $conn->prepare("DELETE FROM TABELA WHERE id = :id");
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
+            $conn->commit();
 
-        if ($stmt->rowCount() > 0) {
-            return $stmt->fetchAll(PDO::FETCH_OBJ);
-        } else {
-            return 'Vazio';
+            if ($stmt->rowCount() > 0) {
+                return $stmt->fetchAll(PDO::FETCH_OBJ);
+            } else {
+                return 'Vazio';
+            }
+
+        } catch (PDOException $e) {
+            $conn->rollback();
+            return 'Exception -> ' . $e->getMessage();
+        } finally {
+            $conn = null;
         }
-
-    } catch (PDOException $e) {
-        $conn->rollback();
-        return 'Exception -> ' . $e->getMessage();
-    } finally {
-        $conn = null;
     }
 }
 
